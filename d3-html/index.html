@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>D3 - HTML</title>
+    <link href="css/style.css" rel="stylesheet">
+  </head>
+  <body>
+    <script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    <script type="text/javascript">
+      var dataset = [3, 4, 11, 62, 12];
+      var body = d3.select('body');
+      body.selectAll('p').data(dataset).enter().append('p').text(function(currData) {
+        return 'I can count uptil ' + currData;
+      }).style('color', function(currData) {
+        if(currData > 15) {
+          return 'red';
+        }
+        return 'green';
+      });
+
+      body.selectAll('div').data(dataset).enter().append('div').attr('class', 'bar-charts').style('height', function(currData) {
+        return currData * 5 + 'px';
+      })
+    </script>
+  </body>
+</html>

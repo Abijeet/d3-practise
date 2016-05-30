@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>D3 - SVG Intro</title>
+    <link href="css/style.css" rel="stylesheet">
+  </head>
+  <body>
+    <script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    <script type="text/javascript">
+    var h = 150;
+    var w = 500;
+    var dataset = [ 5, 10, 15, 20, 25 ];
+    // Add the SVG
+    var svg = d3.select('body').append('svg').attr('height', h).attr('width', w);
+
+    // create the circles.
+    var circle = svg.selectAll('circle').data(dataset).enter().append('circle');
+    circle.attr('cx', function(d, i) {
+      return d + (50 * i);
+    }).attr('cy', h/2)
+    .attr('r', function(d) {
+      return d;
+    }).attr('class', 'pumpkin');
+
+    </script>
+  </body>
+</html>
