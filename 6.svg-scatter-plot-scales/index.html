@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>D3 - SVG Intro</title>
+  <link href="css/style.css" rel="stylesheet">
+</head>
+
+<body>
+  <script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+  <script type="text/javascript">
+    var dataset = [
+                  [ 5,     20 ],
+                  [ 480,   90 ],
+                  [ 250,   50 ],
+                  [ 100,   33 ],
+                  [ 330,   95 ],
+                  [ 410,   12 ],
+                  [ 475,   44 ],
+                  [ 25,    67 ],
+                  [ 85,    21 ],
+                  [ 220,   88 ],
+                  [ 600,  150 ]
+              ];
+
+      var svgW = 540;
+      var svgH = 300;
+      var fontSize = 12;
+      var radius = 5;
+      var padding = 20;
+      var svg = d3.select('body').append('svg');
+      var yMax = d3.max(dataset, function(d) { return d[1]; });
+
+      svg.attr('height', svgH).attr('width', svgW);
+
+      var xScale = d3.scale.linear().domain([0, d3.max(dataset, function(d) {
+        return d[0];
+      })]).range([0, svgW - (padding * 3)]);
+
+      var yScale = d3.scale.linear().domain([yMax, 0]).range([padding, svgH - padding]);
+      var rScale = d3.scale.linear().domain([0, yMax]).range([2, 5]);
+
+      // Draw circles!
+      svg.selectAll('circle').data(dataset).enter().append('circle')
+        .attr('cx', getCircleX)
+        .attr('cy', getCircleY).attr('r', getCircleRadius)
+        .fill('#000');
+
+      // Put the labels
+      svg.selectAll('text').data(dataset).enter().append('text')
+        .attr('x', getCircleX)
+        .attr('y', getCircleY).text(getText)
+        .attr('class', 'label-text');
+
+      function getCircleX(d) {
+        return xScale(d[0]);
+      }
+
+      function getCircleY(d) {
+        return yScale(d[1]);
+      }
+
+      function getCircleRadius(d) {
+        return rScale(d[1]);
+      }
+
+      function getText(d) {
+        return d[0] + ', ' + d[1];
+      }
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,8 @@
+.label-text {
+  font-family: monospace;
+  font-size: 10px;
+  fill: blue;
+}
+circle {
+  opacity: 0.5;
+}
