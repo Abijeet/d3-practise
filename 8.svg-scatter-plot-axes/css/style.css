@@ -1,0 +1,19 @@
+.label-text {
+  font-family: monospace;
+  font-size: 10px;
+  fill: blue;
+}
+circle {
+  opacity: 0.5;
+}
+.x-axis path, .y-axis path,
+.x-axis line, .y-axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+  stroke-width: 1px;
+}
+.x-axis text, .y-axis text {
+    font-family: sans-serif;
+    font-size: 11px;
+}

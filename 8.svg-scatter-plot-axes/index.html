@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="utf-8">
-  <title>D3 - SVG Scatter plot with scales</title>
+  <title>D3 - SVG Scatter plot with scales, axes</title>
   <link href="css/style.css" rel="stylesheet">
 </head>
 
@@ -28,7 +28,7 @@
       var svgH = 300;
       var fontSize = 12;
       var radius = 5;
-      var padding = 20;
+      var padding = 30;
       var svg = d3.select('body').append('svg');
       var yMax = d3.max(dataset, function(d) { return d[1]; });
 
@@ -36,10 +36,18 @@
 
       var xScale = d3.scale.linear().domain([0, d3.max(dataset, function(d) {
         return d[0];
-      })]).range([0, svgW - (padding * 3)]);
+      })]).range([padding, svgW - (padding * 2)]);
 
       var yScale = d3.scale.linear().domain([yMax, 0]).range([padding, svgH - padding]);
       var rScale = d3.scale.linear().domain([0, yMax]).range([2, 5]);
+
+      // Draw the x-axis
+      var xAxis = d3.svg.axis().scale(xScale).orient('bottom').ticks(5);
+      svg.append('g').attr('class', 'x-axis').attr('transform', 'translate(0, ' + (svgH - padding) + ')').call(xAxis);
+
+      // Draw the y-axis
+      var yAxis = d3.svg.axis().scale(yScale).orient('left').ticks(5);
+      svg.append('g').attr('class', 'y-axis').attr('transform', 'translate(' + padding + ', 0)').call(yAxis);
 
       // Draw circles!
       svg.selectAll('circle').data(dataset).enter().append('circle')
@@ -48,7 +56,7 @@
         .fill('#000');
 
       // Put the labels
-      svg.selectAll('text').data(dataset).enter().append('text')
+      svg.selectAll('svg > text').data(dataset).enter().append('text')
         .attr('x', getCircleX)
         .attr('y', getCircleY).text(getText)
         .attr('class', 'label-text');
