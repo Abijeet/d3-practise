@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>D3 - SVG Scatter plot with scales, axes</title>
+    <link href="css/style.css" rel="stylesheet">
+</head>
+
+<body>
+    <script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    <script type="text/javascript">
+        var dataset = [{
+        "sale": "202",
+        "year": "2000"
+    }, {
+        "sale": "215",
+        "year": "2001"
+    }, {
+        "sale": "179",
+        "year": "2002"
+    }, {
+        "sale": "199",
+        "year": "2003"
+    }, {
+        "sale": "134",
+        "year": "2004"
+    }, {
+        "sale": "176",
+        "year": "2005"
+    }];
+
+    var svgW = 540;
+    var svgH = 300;
+    var fontSize = 12;
+    var margins = {
+      top: 20,
+      right: 20,
+      bottom: 30,
+      left: 40
+    };
+
+    // Cleanup data
+    dataset = dataset.map(function(d) {
+        d.sale = +d.sale;
+        d.year = +d.year;
+        return d;
+    });
+
+    var svg = d3.select('body').append('svg');
+    var yMax = d3.max(dataset, function(d) { return d.sale; });
+
+    svg.attr('height', svgH).attr('width', svgW);
+
+    var xScale = d3.scale.linear().domain([d3.min(dataset, function(d) {
+        return d.year;
+    }), d3.max(dataset, function(d) {
+      return d.year;
+    })]).range([margins.left, svgW - margins.left - margins.right]);
+
+    var yScale = d3.scale.linear().domain([yMax, 0]).range([margins.bottom, svgH - margins.top - margins.bottom]);
+
+    // Draw the x-axis
+    var xAxis = d3.svg.axis().scale(xScale).orient('bottom').ticks(5).tickFormat(d3.format('d'));
+    svg.append('g').attr('class', 'x-axis').attr('transform', 'translate(' + 0 + ', ' + (svgH - margins.bottom - margins.top) + ')').call(xAxis);
+
+    // Draw the y-axis
+    var yAxis = d3.svg.axis().scale(yScale).orient('left').ticks(5);
+    svg.append('g').attr('class', 'y-axis').attr('transform', 'translate(' + margins.left + ', ' + 0 + ')').call(yAxis);
+
+    var line = d3.svg.line().x(function(d) {
+       return xScale(d.year);
+    }).y(function(d) {
+       return yScale(d.sale);
+    }).interpolate('basis');
+
+    svg.append('svg:path').attr('d', line(dataset)).attr('stroke', 'green').attr('stroke-width', 2).attr('fill','none');
+    </script>
+</body>
+
+</html>
